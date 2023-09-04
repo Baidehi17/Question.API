@@ -1,4 +1,9 @@
 
+using Question.Concerns.DataContext;
+using Question.Concerns.Entities;
+using Question.Contract;
+using Question.Service;
+
 namespace Question.API
 {
     public class Program
@@ -9,10 +14,19 @@ namespace Question.API
 
             // Add services to the container.
 
+            builder.Services.AddTransient<QuestionContext>();
+            builder.Services.AddTransient<IQuestionDetailsService, QuestionDetailsService>();
+            builder.Services.AddTransient<ISubQuestionService, SubQuestionService>();
+
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddCors(p => p.AddPolicy("corspolicy", build =>
+            {
+                build.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
+            }));
 
             var app = builder.Build();
 
@@ -22,6 +36,8 @@ namespace Question.API
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
+            app.UseCors("corspolicy");
 
             app.UseHttpsRedirection();
 
