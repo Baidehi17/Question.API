@@ -1,13 +1,7 @@
-﻿using Azure;
-using Dapper;
+﻿using Dapper;
 using Question.Concerns.DataContext;
 using Question.Concerns.Entities;
 using Question.Contract;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Question.Service
 {
@@ -61,9 +55,9 @@ namespace Question.Service
         public void DeleteById(int id)
         {
             string query = "Delete From questionDetails where(Id=@id)";
-            using (var connectin = this.context.CreateConnection())
+            using (var connection = this.context.CreateConnection())
             {
-                connectin.Execute(query, new { id });
+                connection.Execute(query, new { id });
             }
         }
     }

@@ -12,8 +12,6 @@ namespace Question.API
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-
             builder.Services.AddTransient<QuestionContext>();
             builder.Services.AddTransient<IQuestionDetailsService, QuestionDetailsService>();
             builder.Services.AddTransient<ISubQuestionService, SubQuestionService>();
@@ -29,7 +27,7 @@ namespace Question.API
             }));
 
             var app = builder.Build();
-
+           
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
@@ -42,7 +40,6 @@ namespace Question.API
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 
