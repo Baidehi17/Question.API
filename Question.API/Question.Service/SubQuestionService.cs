@@ -14,60 +14,51 @@ namespace Question.Service
         }
         public async Task<IEnumerable<SubQuestions>> GetAll()
         {
-            string query = "select * from subQuestions";
             using (var connection = this.context.CreateConnection())
             {
-                var quelist = await connection.QueryAsync<SubQuestions>(query);
+                var quelist = await connection.QueryAsync<SubQuestions>("select * from subQuestions");
                 return quelist;
             }
         }
 
         public async Task<IEnumerable<SubQuestions>> GetSubQuesById(int id)
         {
-            string query = "SELECT * FROM subQuestions WHERE questionDetails_id = @id;";
-
             using (var connection = this.context.CreateConnection())
             {
-                IEnumerable<SubQuestions> subQuestionsList = await connection.QueryAsync<SubQuestions>(query, new { id });
+                IEnumerable<SubQuestions> subQuestionsList = await connection.QueryAsync<SubQuestions>("SELECT * FROM subQuestions WHERE questionDetails_id = @id;", new { id });
                 return subQuestionsList;
             }
         }
 
         public void updateSubQues(SubQuestions subQuest)
         {
-            string query = "UPDATE subQuestions SET subQuestionName = @subQuestionName,numberOfQuestion = @numberOfQuestion, timeLimit = @timeLimit,questionDetails_id = @questionDetails_id WHERE id = @Id;";
-
             using (var connection = this.context.CreateConnection())
             {
-                connection.Execute(query, subQuest);
+                connection.Execute("UPDATE subQuestions SET subQuestionName = @subQuestionName,numberOfQuestion = @numberOfQuestion, timeLimit = @timeLimit,questionDetails_id = @questionDetails_id WHERE id = @Id;", subQuest);
             }
         }
 
         public void AddSubquestions(SubQuestions data)
         {
-            string query = "INSERT INTO subQuestions (subQuestionName, numberOfQuestion, timeLimit, questionDetails_id) VALUES (@subQuestionName, @numberOfQuestion, @timeLimit, @questionDetails_id);";
-
             using (var connection = this.context.CreateConnection())
             {
-                 connection.Execute(query, data);
+                 connection.Execute("INSERT INTO subQuestions (subQuestionName, numberOfQuestion, timeLimit, questionDetails_id) VALUES (@subQuestionName, @numberOfQuestion, @timeLimit, @questionDetails_id);", data);
             }
         }
 
         public void DeleteById(int id)
         {
-            string query = "Delete From subQuestions where(id=@id)";
             using (var connectin = this.context.CreateConnection())
             {
-                connectin.Execute(query, new { id });
+                connectin.Execute("Delete From subQuestions where(id=@id)", new { id });
             }
         }
 
         public async Task DeleteQuestionDetailsById(int id)
         {
-            string query = "Delete From subQuestions where(questionDetails_id=@id)";
             using (var connectin = this.context.CreateConnection())
             {
-               await connectin.ExecuteAsync(query, new { id });
+               await connectin.ExecuteAsync("Delete From subQuestions where(questionDetails_id=@id)", new { id });
             }
         }
     }

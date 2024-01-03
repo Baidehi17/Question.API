@@ -15,10 +15,9 @@ namespace Question.Service
 
         public async Task<IEnumerable<QuestionDetails>> GetAll()
         {
-            string query = "select * from questionDetails";
             using (var connection = this.context.CreateConnection())
             {
-                var quelist = await connection.QueryAsync<QuestionDetails>(query);
+                var quelist = await connection.QueryAsync<QuestionDetails>("select * from questionDetails");
                
                 return quelist;
             }
@@ -26,38 +25,32 @@ namespace Question.Service
 
         public async Task<QuestionDetails> GetQuestionDetailsById(int id)
         {
-            string query = " select * from  questionDetails where(Id=@id);";
             using (var connection = this.context.CreateConnection())
             {
-                var quelist = await connection.QueryFirstOrDefaultAsync<QuestionDetails>(query, new {id});
+                var quelist = await connection.QueryFirstOrDefaultAsync<QuestionDetails>("select * from  questionDetails where(Id=@id);", new {id});
                 return quelist;
             }
         }
         public int AddQuestionDetails(QuestionDetails data)
         {
-            string query = "INSERT INTO questionDetails (questionType, description) VALUES (@questionType, @description);SELECT SCOPE_IDENTITY();";
-
             using (var connection = this.context.CreateConnection())
             {
-                return connection.ExecuteScalar<int>(query, data); //Execute return the single value 
+                return connection.ExecuteScalar<int>("INSERT INTO questionDetails (questionType, description) VALUES (@questionType, @description);SELECT SCOPE_IDENTITY();", data); //Execute return the single value 
             }
         }
 
         public void UpdateQuestionDetails(QuestionDetails user)
         {
-            string query = "UPDATE questionDetails SET questionType = @QuestionType, description = @Description WHERE Id = @Id;";
-
             using (var connection = this.context.CreateConnection())
             {
-                connection.Execute(query, user);
+                connection.Execute("UPDATE questionDetails SET questionType = @QuestionType, description = @Description WHERE Id = @Id;", user);
             }
         }
         public void DeleteById(int id)
         {
-            string query = "Delete From questionDetails where(Id=@id)";
             using (var connection = this.context.CreateConnection())
             {
-                connection.Execute(query, new { id });
+                connection.Execute("Delete From questionDetails where(Id=@id)", new { id });
             }
         }
     }
