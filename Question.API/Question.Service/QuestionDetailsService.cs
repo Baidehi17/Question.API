@@ -45,7 +45,7 @@ namespace Question.Service
 
             using (var connection = this.context.CreateConnection())
             {
-                return connection.ExecuteScalar<int>(query, data);
+                return connection.ExecuteScalar<int>(query, data); //Execute return the single value 
             }
         }
 

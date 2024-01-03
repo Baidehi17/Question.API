@@ -13,6 +13,6 @@ namespace Question.Concerns.Entities
         public int Id { get; set; }
         public string questionType { get; set; }
         public string? description { get; set; }
-        public ICollection<SubQuestions>? subQuestions { get; set; }
+       // public ICollection<SubQuestions>? subQuestions { get; set; }
     }
 }
